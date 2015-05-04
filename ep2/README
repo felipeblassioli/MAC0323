@@ -1,0 +1,60 @@
+EP02
+====
+NOME: Felipe Anez de Toledo Blassioli
+NUSP: 7991058
+
+Compilacao
+---------
+Compilar com
+$ make esfera
+ou
+$ make cubo
+
+Mantive a mesma estrutura de diretorios do ep01.
+Sera executado o seguinte:
+$ make esfera
+gcc -c -o obj/plist.o src/plist.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/dsets.o src/dsets.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/connected.o src/connected.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/emst.o src/emst.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/graph.o src/graph.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/main.o src/main.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/Point.S.o src/Point.S.c -pedantic -Wall -lm -Iinclude
+gcc -o ep02 obj/plist.o obj/dsets.o obj/connected.o obj/emst.o obj/graph.o obj/main.o obj/Point.S.o -pedantic -Wall -lm -Iinclude
+
+Solucao
+-------
+Meu ep02 eh uma versao "simplificada" do ep01.
+Simplificada, pois nao encontrei uma solucao inteligente para o problema
+em D dimensoes.
+Moral da historia, as "solucoes" estao estupidamente lentas...
+
+Parte 1
+-------
+Removi o uso do grid do arquivo connected.c.
+Mas para determinar se eh possivel ligar os N pontos em D dimensoes
+mantive a logica de aglutinar os pontos por meio do uso de "Disjoint Sets".
+
+Parte 2
+-------
+Novamente, removi o uso do grid, dessa vez do arquivo emst.c.
+Para determinar o limiar de conexidade, mantive a logica de 
+determinar a aresta de maior peso (norma euclidiana) da EMST
+do grafo determinado no enunciado.
+Utilizei Kruskal para tal.
+
+Dificuldades
+------------
+Como falei, nao encontrei uma solucao "bacana" para o problema.
+
+Considerei tentar encontrar o "Voronoi Diagram" em N-dimensoes,
+mas seria uma trabalho colossal (tentar) implementar o algoritmo
+cujo pseudo-codigo encontrei na wikipedia.
+
+Fora isso, considerei utilizar a tecnica do grid mas para N-dimensoes,
+mas nao consigue me convencer de que seria uma boa solucao generica 
+(talvez apenas para o hipercubo) e como a solucao do EP deveria ser 
+generica, nao achei adequado implementa-la.
+
+Alem disso, dessa vez tive dificuldades em entender o enunciado.
+

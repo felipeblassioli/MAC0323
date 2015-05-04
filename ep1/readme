@@ -1,0 +1,201 @@
+/*
+* MAC0323 - EP01: Limiar de Conexidade
+*
+* Nome: Felipe Anez de Toledo Blassioli
+* NUSP: 7991058
+*/
+
+SOLUCAO DA PARTE 1
+==================
+Funcoes principais
+------------------ 
+   * connected.c: find_edges_shorter_than()
+   * grid.c: insertgrid()
+
+Explicacao
+----------
+O problema era determinar se um dado conjunto de pontos N no 
+quadrado unitario eh ou nao conexo para uma dada distancia d.
+
+Definindo uma aresta como (u,v) onde u e v sao pontos do quadrado 
+unitario e seu peso eh a distancia entre esses pontos. A solucao 
+consiste em obter todas as arestas (u,v) com peso menor que d e 
+depois verificar se eh possivel conectar todos os N pontos com
+esse conjunto de arestas.
+
+(1) Obter o conjunto de arestas
+-------------------------------
+Ao inves de calcular as N(N-1)/2 distancias possiveis, optei
+por um numero possivelmente menor, utilizando um algoritmo
+descrito no livro do Sedgewick. Tal algoritmo consiste em 
+dividir o quadrado unitario em varias celulas (torna-lo um grid)
+e inserir inteligentemente os pontos nesse grid.
+
+Dai, basta inserir no grid os pontos um a um inteligentemente.
+
+Inserir no grid inteligentemente, significa garantir no momento 
+da insercao que os unicos pontos possiveis cuja distancia do novo 
+ponto eh menor que d sao aqueles que estao nas celulas adjacentes, 
+em relacao a celula em que foi inserido o ponto atual.
+
+Aparentemente, essa tecnica eh conceitualmente classificada como
+"Range Searching". Gostaria de acrescentar que a achei muito 
+inteligente e que eu jamais teria pensado nela sozinho.
+
+Tal insercao foi implementada em grid.c: insertgrid()
+
+(2) Determinar quais vertices estao ligados
+-------------------------------------------
+Em posse de todas as arestas de peso menor que d, determinar 
+se eh possivel ligar o conjunto inicial de N pontos eh facil. 
+Sabendo da seguinte propriedade:
+
+Propriedade I
+-------------
+Uma arvore de N-1 arestas liga N pontos.
+
+Assim, basta tentar construir uma arvore com N-1 arestas utilizando esse
+conjunto de arestas. Para tal, utiliza-se a estrutura de dados conhecida 
+por "Disjoint Sets" (ver dsets.h). E o algoritmo abaixo ilustra o processo:
+
+Pseudo-codigo
+-------------
+Denota-se o conjunto de vertices do grafo G por G.V e seu conjunto de arestas 
+por G.E.
+
+1. CONNECTED-COMPONENTS(G)
+2. Para cada v em G.V
+3.   MAKE-SET(v)
+4. Para cada aresta (u,v) em G.E
+5.   Se FIND-SET(u) != FIND-SET(v)
+6.     UNION(u,v)
+
+Tais funcoes foram implementadas em dsets.c
+
+A quantidade de arestas da arvore eh retornada por:
+  connected.c: find_edges_shorter_than()
+
+A verificacao de conexidade eh feita em main.c e consiste apenas em checar a
+se find_edges_shorter_than() == N-1, de acordo com a propriedade (I).
+
+SOLUCAO DA PARTE 2
+==================
+Funcoes principais
+------------------ 
+   * emst.c: find_min_dist()
+   * grid.c: insertgrid()
+   * emst.c: kruskal()
+
+Explicacao
+----------
+O problema consiste em encontrar o menor d para que eh possivel
+construir um grafo de N vertices cujas arestas tem peso menor que
+d e o peso das arestas sao as distancias entre seus pontos. Esse problema, 
+aparentemente, eh conhecido como Euclidean Minimum Spanning Tree. 
+
+A solucao adotada eh descrita no Sedgwick (1990) na pagina 468: aplicar o 
+metodo do grid (Range Searching) para reduzir a quantidade de arestas do grafo 
+que queremos encontrar a MST ao dividir o quadrado unitadoria em celulas que 
+contem aproximadamente log N / 2 pontos e construir um grafo cujas arestas sao 
+apenas aquelas arestas que ligam pontos em quadrados adjacentes. Dai, eh soh 
+utilizar o algoritmo de Kruskal para encontrar de fato a MST.
+
+Infelizmente esse algoritmo nao funciona em 100% dos casos, basta tomar pontos
+que formam duas "aglomeracoes" que pela condicao de adjacencia nao se ligam, 
+isto eh formam um grafo desconexo. Arrisco-me, a dizer no entanto que a 
+probabilidade de tais grafos serem gerados nas condicoes aleatorias do ep eh
+bem pequena.
+
+Ainda assim, em vista disso, pesquisei bastante e vi que uma solucao parecida 
+e que poderia funcionar em 100% dos casos eficientemente eh chamada de 
+Dual-Borukva, mas assim como a solucao citada pelo Sedgewick que consiste em 
+computar o "Dual of the Voronoi Diagram" eh bastante complicada/extensa e por 
+isso nao foi escolhida. (incidentalmente ha um codigo pronto na wikipedia que 
+computa o Voronoi Diagram)
+
+Kruskal
+-------
+Escolhi Kruskal para resolver o problema por recomendacao
+do Sedgewick no capitulo 31 na secao "Geometric Problems"
+
+Segue o pseudo-codigo do algoritmo de Kruskal.
+
+MST-KRUSKAL(G,w)
+1. A = vazio
+2. Para cada vertice v em G.V
+3.   MAKE-SET(v)
+4. Ordenar arestas de G.E em ordem nao-decrescente de peso
+5. Para cada aresta (u,v) em G.E retiradas da maior para a menor
+6.   Se FIND-SET(u) != FIND-SET(v)
+7.     A = A U {(u,v)}
+8.     UNION(u,v)
+9. retornar A
+
+Onde:
+  * G um grafo
+  * G.E o conjunto de arestas do grafo G.
+  * G.V o conjunto de vertices do grafo G.
+  * A o conjunto de arestas que consistem na MST.
+  * MAKE-SET(a), FIND-SET(a) e UNION(a,b) operacoes de um "Disjoint Set"
+
+A implementacao em C, encontra-se em emst.c: kruskal()
+
+DIFICULDADES
+============
+Principais dificuldades:
+  1) Alocacao e liberacao de memoria.
+  2) Estruturar o projeto.
+  3) Codificar o makefile.
+  4) Inexperiencia com ferramentas:
+     - Nao saber utilizar o vim direito.
+     - Nao utilizar um sistema de versionamento (i.e n ter um servidor Git local)
+     - Nao saber utilizar shellscript direito.
+
+1) Alocacao e liberacao de memoria
+----------------------------------
+Fiz o projeto sem me preocupar com a liberacao de memoria.
+Assim, ao terminar tudo e comecar a testar o parametro -M, 
+me deparei com muitos erros, os quais assumi serem causados
+por "memory leaks". Felizmente, depois que toda memoria alocada 
+foi liberada corretamente (ou assim espero), os erros desapareceram.
+
+O erro que mais me tomou tempo para resolver foi um "OFF-BY-ONE error"
+que ocorreu em grid.c, pois eu havia alocado menos memoria para as 
+celulas do grid do que de fato era utilizado em insertgrid, o que
+resultava em "segmentation fault". 
+
+Custou-me de 3 a 4 horas para isolar e corrigir o erro.
+
+2) Estruturar o projeto
+-----------------------
+Estou habituado a programar em Java, entao tive certa dificuldade
+em decidir que estrutura adotar para o projeto. Para tal, ateh ficar
+satisfeito, olhei alguns pequenos projetos no github e decidi por:
+
+ep1/
+  include/ : arquivos *.h
+  src/     : arquivos *.c
+  testes/  : scripts de teste, suas entradas e saidas.
+    in/
+    out/
+    teste1.sh
+    teste2.sh
+  makefile 
+
+Para implementa-la no entanto, precisei estudar um pouco sobre
+como funcionam headers, os quais nunca tinha utilizado, e o 
+pre-processador do C.
+
+3) Codificar o makefile
+-----------------------
+Tambem precisei "aprender" a utilizar um makefile.
+Achei bastante interessante, e espero dedicar mais tempo no
+futuro para tirar algumas duvidas que me surgiram no processo.
+
+4) Inexperiencia com ferramentas
+--------------------------------
+- Conhecer poucos comandos do vim me fez perder tempo com tarefas triviais (identacao, copy/paste, etc).
+- Conhecer pouco de bash me fez ter que pesquisar um bocado para escrever scripts de teste
+(necessarios para garantir a integridade apos um fix/modificacao na versao anterior)
+- A falta de sistema de versionamento (i.e Git local) me fez criar 6 versoes do ep (final1, final2 .. final6) 
+e deixa bem dificil reverter modificacoes. (os diffs ficam na minha cabeca)

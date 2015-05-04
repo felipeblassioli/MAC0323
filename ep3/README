@@ -1,0 +1,65 @@
+NOME: Felipe Anez de Toledo Blassioli
+NUSP: 7991058
+
+Compilacao
+----------
+make clean; make
+
+Testes
+------
+$ ./teste.sh
+Serao geradas as saidas referentes a:
+$ ./ep3 -fmanifesto.txt.out
+Casos:
+  $ -ev you
+  out1
+
+  $ -eV you
+  out2
+
+  $ -a be
+  out3
+
+  $ -d
+  out4
+  
+  $ -l
+  out5
+
+  $ -L
+  out6
+
+  $ -s
+  out7
+
+Estrutura
+---------
+main.c
+  utils.c
+  print.c
+    Sentence.c
+    Metadata.c
+    llrb.c (T1: arvore rubro-negra)
+    llrb2.c (T2: arvore rubro-negra)
+      Item.c
+      Item2.c
+
+Observacoes
+-----------
+Optei por exibir as sentencas sem repeticao.
+Por exemplo:
+-ev man
+Se a palavra 'man' ocorre 3 vezes na sentenca #42
+entao a sentenca #42 sera exibida apenas 1 vez.
+Isso foi feito em src/Item.c: ITEMaddWord(Item,char *).
+
+Dificuldades
+------------
+Me incomodou bastante o fato de nao conseguir
+implementar de modo generico a ST e de ter que
+duplicar boa  parte codigo.
+Pesquisei como trabalhar "genericamente" em
+C puro, mas nao achei adequada `a minha necessidade,
+visto que o codigo llrb.c ja estava pronto.
+(O yoshi numa aula para olharmos e usarmos a implementacao
+que estava na pagina disciplina)

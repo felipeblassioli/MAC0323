@@ -1,0 +1,156 @@
+gcc -c -o obj/plist.o src/plist.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/dsets.o src/dsets.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/connected.o src/connected.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/emst.o src/emst.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/graph.o src/graph.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/main.o src/main.c -pedantic -Wall -lm -Iinclude
+gcc -c -o obj/Point.C.o src/Point.C.c -pedantic -Wall -lm -Iinclude
+gcc -o ep02 obj/plist.o obj/dsets.o obj/connected.o obj/emst.o obj/graph.o obj/main.o obj/Point.C.o -pedantic -Wall -lm -Iinclude
++++++++
+CUBO
++++++++
+Teste 1
+============
+./ep02 -D2 -N10 -M1 -v 
+d*(p_1) = 0.262020
+--------------
+./ep02 -D2 -N10 -d0.262021
+Conexo!
+./ep02 -D2 -N10 -d0.262019
+Nao conexo!
+
+Teste 2
+============
+./ep02 -D3 -N10 -M1 -v 
+d*(p_1) = 0.359441
+--------------
+./ep02 -D3 -N10 -d0.359442
+Conexo!
+./ep02 -D3 -N10 -d0.359440
+Nao conexo!
+
+Teste 3
+============
+./ep02 -D5 -N10 -M1 -v 
+d*(p_1) = 0.394142
+--------------
+./ep02 -D5 -N10 -d0.394143
+Conexo!
+./ep02 -D5 -N10 -d0.394141
+Nao conexo!
+
+Teste 4
+============
+./ep02 -D7 -N10 -M1 -v 
+d*(p_1) = 0.345809
+--------------
+./ep02 -D7 -N10 -d0.345810
+Conexo!
+./ep02 -D7 -N10 -d0.345808
+Nao conexo!
+
+Teste 5
+============
+./ep02 -D11 -N10 -M1 -v 
+d*(p_1) = 0.356290
+--------------
+./ep02 -D11 -N10 -d0.356291
+Conexo!
+./ep02 -D11 -N10 -d0.356289
+Nao conexo!
+
+Teste 6
+============
+./ep02 -D100 -N100 -M1 -v 
+d*(p_1) = 0.377255
+--------------
+./ep02 -D100 -N100 -d0.377256
+Conexo!
+./ep02 -D100 -N100 -d0.377254
+Nao conexo!
+
+Teste 7
+============
+./ep02 -D1000 -N1000 -M1 -v 
+d*(p_1) = 0.397289
+--------------
+./ep02 -D1000 -N1000 -d0.397290
+Conexo!
+./ep02 -D1000 -N1000 -d0.397288
+Nao conexo!
+
+gcc -c -o obj/Point.S.o src/Point.S.c -pedantic -Wall -lm -Iinclude
+gcc -o ep02 obj/plist.o obj/dsets.o obj/connected.o obj/emst.o obj/graph.o obj/main.o obj/Point.S.o -pedantic -Wall -lm -Iinclude
+++++++++
+ESFERA
+++++++++
+Teste 1
+============
+./ep02 -D2 -N10 -M1 -v 
+d*(p_1) = 0.391502
+--------------
+./ep02 -D2 -N10 -d0.391503
+Conexo!
+./ep02 -D2 -N10 -d0.391501
+Nao conexo!
+
+Teste 2
+============
+./ep02 -D3 -N10 -M1 -v 
+d*(p_1) = 0.577799
+--------------
+./ep02 -D3 -N10 -d0.577800
+Conexo!
+./ep02 -D3 -N10 -d0.577798
+Nao conexo!
+
+Teste 3
+============
+./ep02 -D5 -N10 -M1 -v 
+d*(p_1) = 0.644226
+--------------
+./ep02 -D5 -N10 -d0.644227
+Nao conexo!
+./ep02 -D5 -N10 -d0.644225
+Nao conexo!
+
+Teste 4
+============
+./ep02 -D7 -N10 -M1 -v 
+d*(p_1) = 0.641450
+--------------
+./ep02 -D7 -N10 -d0.641451
+Conexo!
+./ep02 -D7 -N10 -d0.641449
+Nao conexo!
+
+Teste 5
+============
+./ep02 -D11 -N10 -M1 -v 
+d*(p_1) = 0.608079
+--------------
+./ep02 -D11 -N10 -d0.608080
+Conexo!
+./ep02 -D11 -N10 -d0.608078
+Nao conexo!
+
+Teste 6
+============
+./ep02 -D100 -N100 -M1 -v 
+d*(p_1) = 0.644780
+--------------
+./ep02 -D100 -N100 -d0.644781
+Nao conexo!
+./ep02 -D100 -N100 -d0.644779
+Nao conexo!
+
+Teste 7
+============
+./ep02 -D1000 -N1000 -M1 -v 
+d*(p_1) = 0.679268
+--------------
+./ep02 -D1000 -N1000 -d0.679269
+Conexo!
+./ep02 -D1000 -N1000 -d0.679267
+Nao conexo!
+
